@@ -6,29 +6,35 @@
     <title>Web Security Scanner - B2B Platforma</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #000000; color: #333; display: flex; flex-direction: column; align-items: center; padding: 30px; }
-        
-        .loader {
-    max-width: 100%;
-    margin-left: 150px;
-    margin-top: -650px;
-    z-index: 999;
-  position: relative;
-  width: 800px;
-  height: 800px;
-  z-index: -1;
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background-color: #000000; 
+    color: #333; 
+    display: flex; 
+    justify-content: center; /* Gorizontal markazlash */
+    align-items: center;     /* Vertikal markazlash */
+    height: 100vh;           /* Ekran bo'yi bilan cheklash */
+    margin: 0; 
+    overflow: hidden;        /* SCROLLNI MUTLAQ YO'QOTISH */
+}
+
+.loader {
+    position: absolute;      /* Sahifa oqimidan chiqarish */
+    width: 600px;
+    height: 600px;
+    z-index: 1;              /* Formadan orqada turishi uchun */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .loader span {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 600px;
-  height: 600px;
-  border: 2px solid transparent;
-   /* Noaniq aylana shakli */
-  border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-  animation: animate 6s linear infinite;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 2px solid transparent;
+    border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+    animation: animate 6s linear infinite;
 }
 
 /* Har bir halqa uchun alohida rang va tezlik */
@@ -72,8 +78,26 @@
 }
 
         /* Auth (Kirish) qismi dizayni */
-        #authContainer { backgrond: rgb(0, 0, 0); padding: 190px 745px; border-radius: 0px; box-shadow: 0 4px 15px rgb(0, 0, 0); width: 100%; max-width: 400px; text-align: center; margin-top: 50px; }
-        #authContainer input { width: 90%; padding: 12px; margin-bottom: 15px; border: 1px solid #000000; border-radius: 50px; font-size: 16px; outline: none; box-shadow: 0 0 30px blueviolet; }
+#authContainer { 
+    position: relative;
+    z-index: 10;             /* Loader ustida ko'rinishi uchun */
+    padding: 40px;           /* Paddingni kichraytirdik */
+    width: 100%; 
+    max-width: 400px; 
+    text-align: center; 
+}
+
+#authContainer input { 
+    width: 100%;             /* 90% dan 100% ga o'zgartirildi */
+    padding: 12px; 
+    margin-bottom: 15px; 
+    border: 1px solid #000000; 
+    border-radius: 50px; 
+    font-size: 16px; 
+    outline: none; 
+    box-shadow: 0 0 30px blueviolet; 
+    box-sizing: border-box;  /* Enini to'g'ri hisoblash uchun */
+}
         .auth-btns { display: flex; gap: 10px; justify-content: center; }
         .auth-btns button { flex: 1; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; transition: 0.3s; }
         .btn-login { background-color: #4e116f; } .btn-login:hover { background-color: #980cb8; }
@@ -111,8 +135,12 @@
 </head>
 <body>
 
+    <div class="loader">
+        <span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+
     <div id="authContainer">
-        <h2 style="margin-top: 0;font-family: 'Courier New', Courier, monospace; color: #8fc7ff;">Tizimga kirish</h2>
+        <h2 style="margin-top: 0; font-family: 'Courier New', Courier, monospace; color: #8fc7ff;">Tizimga kirish</h2>
         <p style="color: #d7d7d7; font-size: 14px; margin-bottom: 25px;">SaaS platformamizga xush kelibsiz</p>
         <input type="text" id="username" placeholder="Login (Loginingizni kiriting)">
         <input type="password" id="password" placeholder="Parolingizni kiriting">
@@ -122,15 +150,6 @@
         </div>
         <p id="authMessage" style="color: #e74c3c; margin-top: 15px; font-size: 14px; height: 20px;"></p>
     </div>
-
-    <div class="loader">
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-  <span></span>
-</div>
 
     <div id="appContainer">
         <div class="header-bar">
