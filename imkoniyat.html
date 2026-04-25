@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Imkoniyat - Nurullayev Kiberxavfsizlik</title>
+    <link rel="stylesheet" href="https://fontawesome.com/icons/building?f=classic&s=regular">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <style>
+        /* ================= ASOSIY SOZLAMALAR ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #050505; /* Juda to'q qora fon */
+            color: #e7e7e7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ================= ORQA FON EFFEKTLARI ================= */
+        .ambient-light-1 {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(127, 66, 167, 0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .ambient-light-2 {
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(42, 107, 167, 0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ================= YUQORI MENYU (HEADER) ================= */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, #a7a7a7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        .nav-active {
+            color: #fff !important;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #7f42a7;
+            box-shadow: 0 0 10px #7f42a7;
+        }
+
+        .btn-sign {
+            background: linear-gradient(135deg, #e7e7e7, #a7a7a7);
+            color: #000;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-sign:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(231, 231, 231, 0.3);
+            background: #fff;
+        }
+
+        /* ================= ASOSIY QISM (HERO) ================= */
+        .features-hero {
+            text-align: center;
+            padding: 6rem 0 3rem;
+        }
+
+        .tag-box {
+            display: inline-flex;
+            padding: 1px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #333, #7f42a7, #333);
+            margin-bottom: 2rem;
+        }
+
+        .tag {
+            background: #050505;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #e7e7e7;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to bottom right, #ffffff, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.2rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ================= XIZMATLAR KARTALARI (GRID) ================= */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            padding-bottom: 6rem;
+        }
+
+        .card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 2.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 0%, rgba(127, 66, 167, 0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(127, 66, 167, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 
+                        0 0 20px rgba(127, 66, 167, 0.1);
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-wrapper {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* YANGLANGAN IKONKA STILLARI */
+        .icon-wrapper i {
+            font-size: 2rem; /* Ikonka kattaligi */
+            background: linear-gradient(135deg, #e7e7e7, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .icon-wrapper i {
+            background: linear-gradient(135deg, #fff, #a742f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            transform: scale(1.1);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            font-weight: 600;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card p {
+            color: #999;
+            font-size: 1rem;
+            line-height: 1.7;
+            position: relative;
+            z-index: 2;
+        }
+
+        .premium-card {
+            background: linear-gradient(145deg, rgba(30, 20, 40, 0.6), rgba(15, 15, 15, 0.8));
+            border: 1px solid rgba(127, 66, 167, 0.3);
+        }
+        
+        .premium-card .icon-wrapper {
+            background: rgba(127, 66, 167, 0.2);
+            border-color: rgba(127, 66, 167, 0.5);
+        }
+
+        .premium-card .icon-wrapper i {
+            background: linear-gradient(135deg, #fff, #7f42a7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light-1"></div>
+    <div class="ambient-light-2"></div>
+
+    <div class="container">
+        
+        <header>
+            <h1 class="logo">Nurullayev</h1>
+            <nav>
+                <a href="index.html">ASOSIY</a>
+                <a href="haqida.html">HAQIDA</a>
+                <a href="imkoniyat.html" class="nav-active">IMKONIYAT</a>
+                <a href="boglanish.html">BOG'LANISH</a>
+            </nav>
+            <a href="#" class="btn-sign">TIZIMGA KIRISH</a>
+        </header>
+
+        <div class="features-hero">
+            <div class="tag-box">
+                <div class="tag">Kiber Himoya Xizmatlari</div>
+            </div>
+            <h2 class="title">TIZIMINGIZNI YANGI<br>BOSQICHDA HIMOYALANG</h2>
+            <p class="subtitle">Biznesingizni har qanday raqamli tahdidlardan himoya qilish uchun zamonaviy va intellektual yechimlar. Xavfsizlik endi oddiy skanerlashdan iborat emas.</p>
+        </div>
+
+        <div class="grid-container">
+            
+            <div class="card">
+                <div class="icon-wrapper"><i class='bx bx-target-lock'></i></div>
+                <h3>Penetratsion Test (PenTest)</h3>
+                <p>Tizimingizni "Oq qalpoqli" xakerlarimiz yordamida chuqur tekshiramiz. Yashirin zaifliklarni jinoyatchilardan oldin topib, ularga barham beramiz.</p>
+            </div>
+
+            <div class="card premium-card">
+                <div class="icon-wrapper"><i class='bx bx-shield-quarter'></i></div>
+                <h3>DDoS Himoyasi 24/7</h3>
+                <p>Katta hajmdagi sun'iy trafik va botnet hujumlarini real vaqt rejimida aniqlash va bloklash orqali serveringiz barqarorligini ta'minlaymiz.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon-wrapper"><i class='bx bx-radar'></i></div>
+                <h3>Aqlli Monitoring</h3>
+                <p>Veb-sayt va ilovalaringizni tinimsiz kuzatib boruvchi, shubhali harakatlarni soniyalar ichida aniqlaydigan avtomatlashtirilgan tizim.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon-wrapper"><i class='bx bx-lock-alt'></i></div>
+                <h3>Ma'lumotlar Shifrlanishi</h3>
+                <p>Foydalanuvchilaringiz va biznesingizning maxfiy bazalarini eng kuchli kriptografik standartlar (AES-256) asosida shifrlaymiz.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon-wrapper"><i class='bx bx-bug-alt'></i></div>
+                <h3>Ijtimoiy Muhandislik auditi</h3>
+                <p>Xodimlaringiz fishing (aldov) xatlarini ajrata oladimi? Jamoangizni amaliy xakerlik simulyatsiyalari orqali xavflarga tayyorlaymiz.</p>
+            </div>
+
+            <div class="card">
+                <div class="icon-wrapper"><i class="fa-regular fa-building"></i></div>
+                <h3>Tezkor Aralashuv (IR)</h3>
+                <p>Agar tizimga buzib kirilgan bo'lsa, mutaxassislarimiz zudlik bilan aralashib, hujumni to'xtatadi va yetkazilgan zararni minimallashtiradi.</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

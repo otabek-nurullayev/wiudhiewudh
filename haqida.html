@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Haqida - Nurullayev Kiberxavfsizlik</title>
+    <style>
+        /* ================= ASOSIY SOZLAMALAR ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #050505; /* Juda to'q qora fon */
+            color: #e7e7e7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ================= ORQA FON EFFEKTLARI ================= */
+        .ambient-light-1 {
+            position: fixed;
+            top: -10%;
+            left: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(127, 66, 167, 0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .ambient-light-2 {
+            position: fixed;
+            bottom: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(42, 107, 167, 0.1) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ================= YUQORI MENYU (HEADER) ================= */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, #a7a7a7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        /* Aktiv menyu (Hozirgi sahifa) */
+        .nav-active {
+            color: #fff !important;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #7f42a7;
+            box-shadow: 0 0 10px #7f42a7;
+        }
+
+        .btn-sign {
+            background: linear-gradient(135deg, #e7e7e7, #a7a7a7);
+            color: #000;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-sign:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(231, 231, 231, 0.3);
+            background: #fff;
+        }
+
+        /* ================= ASOSIY QISM (HERO) ================= */
+        .about-hero {
+            text-align: center;
+            padding: 6rem 0 3rem;
+        }
+
+        .tag-box {
+            display: inline-flex;
+            padding: 1px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #333, #7f42a7, #333);
+            margin-bottom: 2rem;
+        }
+
+        .tag {
+            background: #050505;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #e7e7e7;
+        }
+
+        .title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to bottom right, #ffffff, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.15rem;
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* ================= STATISTIKA KARTALARI ================= */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            padding: 3rem 0;
+        }
+
+        .stat-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-10px);
+            border-color: rgba(127, 66, 167, 0.5);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(127, 66, 167, 0.1);
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            line-height: 1;
+            background: linear-gradient(135deg, #fff, #7f42a7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .stat-label {
+            color: #999;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+        }
+
+        .premium-stat {
+            background: linear-gradient(145deg, rgba(30, 20, 40, 0.6), rgba(15, 15, 15, 0.8));
+            border: 1px solid rgba(127, 66, 167, 0.3);
+        }
+
+        /* ================= MA'LUMOT BLOKLARI ================= */
+        .info-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            padding: 4rem 0 6rem;
+        }
+
+        .info-box {
+            background: rgba(15, 15, 15, 0.6);
+            border-radius: 24px;
+            padding: 3rem;
+            border-left: 4px solid #7f42a7;
+            position: relative;
+            transition: 0.3s ease;
+        }
+
+        .info-box:hover {
+            background: rgba(20, 20, 20, 0.8);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .info-box h3 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .info-box p {
+            color: #aaa;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light-1"></div>
+    <div class="ambient-light-2"></div>
+
+    <div class="container">
+        
+        <header>
+            <h1 class="logo">Nurullayev</h1>
+            <nav>
+    <a href="index.html">ASOSIY</a>
+    <a href="haqida.html" class="nav-active">HAQIDA</a>
+    <a href="imkoniyat.html">IMKONIYAT</a>
+    <a href="boglanish.html">BOG'LANISH</a>
+</nav>
+            <a href="#" class="btn-sign">TIZIMGA KIRISH</a>
+        </header>
+
+        <div class="about-hero">
+            <div class="tag-box">
+                <div class="tag">Biz Haqimizda</div>
+            </div>
+            <h2 class="title">RAQAMLI DUNYODA<br>SIZNING QALQONINGIZ</h2>
+            <p class="subtitle">"Nurullayev" kiberxavfsizlik jamoasi yillar davomida yirik biznes va tashkilotlarni xakerlik hujumlaridan, ma'lumotlar sizib chiqishidan va yashirin zaifliklardan ishonchli tarzda himoya qilib kelmoqda.</p>
+        </div>
+
+        <div class="stats-container">
+            <div class="stat-card">
+                <div class="stat-number">500+</div>
+                <div class="stat-label">Himoyalangan Loyihalar</div>
+            </div>
+            <div class="stat-card premium-stat">
+                <div class="stat-number">24/7</div>
+                <div class="stat-label">Doimiy Nazorat & Himoya</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">99.9%</div>
+                <div class="stat-label">Hujumlar Qaytarilgan</div>
+            </div>
+        </div>
+
+        <div class="info-container">
+            <div class="info-box">
+                <h3>🎯 Nima uchun biz?</h3>
+                <p>Biz tizimni shunchaki avtomatlashtirilgan skanerlardan o'tkazibgina qolmaymiz. Mutaxassislarimiz eng so'nggi xakerlik usullaridan foydalangan holda qo'lda penetratsion testlar (PenTest) o'tkazadi va haqiqiy xavflarni ertaroq aniqlab, bartaraf etadi.</p>
+            </div>
+            <div class="info-box">
+                <h3>🎖️ Ekspert Jamoa</h3>
+                <p>Jamoamiz xalqaro darajadagi eng nufuzli kiberxavfsizlik sertifikatlariga (CEH, OSCP) ega bo'lgan, o'z ishining ustasi hisoblangan yetakchi "Oq qalpoqli" (White Hat) xakerlardan tashkil topgan. Biz bilan biznesingiz xavfsiz qo'llarda.</p>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

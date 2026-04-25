@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bog'lanish - Nurullayev Kiberxavfsizlik</title>
+    <style>
+        /* ================= ASOSIY SOZLAMALAR ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #050505;
+            color: #e7e7e7;
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ================= ORQA FON EFFEKTLARI ================= */
+        .ambient-light-1 {
+            position: fixed;
+            top: 20%;
+            left: -10%;
+            width: 40vw;
+            height: 40vw;
+            background: radial-gradient(circle, rgba(127, 66, 167, 0.2) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .ambient-light-2 {
+            position: fixed;
+            bottom: -10%;
+            right: -10%;
+            width: 50vw;
+            height: 50vw;
+            background: radial-gradient(circle, rgba(42, 107, 167, 0.15) 0%, rgba(0,0,0,0) 70%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* ================= YUQORI MENYU (HEADER) ================= */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+            background: linear-gradient(to right, #fff, #a7a7a7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav {
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.95rem;
+            letter-spacing: 0.1em;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: #fff;
+        }
+
+        .nav-active {
+            color: #fff !important;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #7f42a7;
+            box-shadow: 0 0 10px #7f42a7;
+        }
+
+        .btn-sign {
+            background: linear-gradient(135deg, #e7e7e7, #a7a7a7);
+            color: #000;
+            padding: 0.8rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .btn-sign:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(231, 231, 231, 0.3);
+            background: #fff;
+        }
+
+        /* ================= BOG'LANISH QISMI (HERO) ================= */
+        .contact-hero {
+            text-align: center;
+            padding: 4rem 0 2rem;
+        }
+
+        .tag-box {
+            display: inline-flex;
+            padding: 1px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #333, #7f42a7, #333);
+            margin-bottom: 2rem;
+        }
+
+        .tag {
+            background: #050505;
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            color: #e7e7e7;
+        }
+
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1rem;
+            background: linear-gradient(to bottom right, #ffffff, #888888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ================= ASOSIY KONTAKT BLOKI ================= */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            padding: 3rem 0 6rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* Chap tomon: Kontakt Ma'lumotlari */
+        .contact-info-card {
+            background: rgba(20, 20, 20, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.5rem;
+        }
+
+        .info-icon {
+            font-size: 1.8rem;
+            background: rgba(127, 66, 167, 0.2);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            border: 1px solid rgba(127, 66, 167, 0.5);
+        }
+
+        .info-text h4 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+            font-weight: 600;
+        }
+
+        .info-text p {
+            color: #999;
+            font-size: 0.95rem;
+        }
+
+        /* Ijtimoiy tarmoqlar */
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .social-btn {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            background: #7f42a7;
+            border-color: #7f42a7;
+            box-shadow: 0 5px 15px rgba(127, 66, 167, 0.4);
+            transform: translateY(-3px);
+        }
+
+        /* O'ng tomon: Xabar Yuborish Formasi */
+        .contact-form-card {
+            background: linear-gradient(145deg, rgba(30, 20, 40, 0.6), rgba(15, 15, 15, 0.8));
+            border: 1px solid rgba(127, 66, 167, 0.3);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: #aaa;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+            color: #fff;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        /* Formaga bosganda yuzaga keladigan neon effekt */
+        .form-control:focus {
+            border-color: #7f42a7;
+            box-shadow: 0 0 15px rgba(127, 66, 167, 0.4);
+            background: rgba(20, 10, 30, 0.8);
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: linear-gradient(90deg, #5300a0, #7f42a7);
+            color: #fff;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .submit-btn:hover {
+            box-shadow: 0 10px 25px rgba(127, 66, 167, 0.5);
+            transform: translateY(-2px);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="ambient-light-1"></div>
+    <div class="ambient-light-2"></div>
+
+    <div class="container">
+        
+        <header>
+            <h1 class="logo">Nurullayev</h1>
+            <nav>
+    <a href="index.html">ASOSIY</a>
+    <a href="haqida.html">HAQIDA</a>
+    <a href="imkoniyat.html">IMKONIYAT</a>
+    <a href="boglanish.html" class="nav-active">BOG'LANISH</a>
+</nav>
+            <a href="#" class="btn-sign">TIZIMGA KIRISH</a>
+        </header>
+
+        <div class="contact-hero">
+            <div class="tag-box">
+                <div class="tag">Bepul Konsultatsiya</div>
+            </div>
+            <h2 class="title">BIZ BILAN BOG'LANING</h2>
+            <p class="subtitle">Tizimingizda shubha bormi yoki kiberxavfsizlik bo'yicha maslahat kerakmi? So'rov qoldiring, mutaxassislarimiz tez orada sizga aloqaga chiqishadi.</p>
+        </div>
+
+        <div class="contact-wrapper">
+            
+            <div class="contact-info-card">
+                
+                <div class="info-item">
+                    <div class="info-icon">📍</div>
+                    <div class="info-text">
+                        <h4>Bosh Ofis</h4>
+                        <p>O'zbekiston, Toshkent sh.,<br>IT Park majmuasi, 100125</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">📞</div>
+                    <div class="info-text">
+                        <h4>Telefon (24/7 Qutqaruv)</h4>
+                        <p>+998 90 123 45 67<br>+998 71 234 56 78</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon">✉️</div>
+                    <div class="info-text">
+                        <h4>Elektron Pochta</h4>
+                        <p>info@nurullayev.uz<br>support@nurullayev.uz</p>
+                    </div>
+                </div>
+
+                <div class="social-links">
+                    <a href="#" class="social-btn">Telegram</a>
+                    <a href="#" class="social-btn">LinkedIn</a>
+                    <a href="#" class="social-btn">GitHub</a>
+                </div>
+
+            </div>
+
+            <div class="contact-form-card">
+                <form onsubmit="event.preventDefault(); alert('Xabaringiz muvaffaqiyatli yuborildi. Tez orada aloqaga chiqamiz!'); this.reset();">
+                    
+                    <div class="form-group">
+                        <label for="name">To'liq ismingiz</label>
+                        <input type="text" id="name" class="form-control" placeholder="Masalan: Alisher Vohidov" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Elektron pochta yoki Telefon raqam</label>
+                        <input type="text" id="email" class="form-control" placeholder="aloqa@uchun..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject">Murojaat mavzusi</label>
+                        <input type="text" id="subject" class="form-control" placeholder="Masalan: Saytni tekshirish xizmati">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">Xabaringiz</label>
+                        <textarea id="message" class="form-control" placeholder="Muammoingiz yoki qiziqayotgan xizmatingiz haqida qisqacha yozib qoldiring..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">Xabarni Yuborish &gt;</button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

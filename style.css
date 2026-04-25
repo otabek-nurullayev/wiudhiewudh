@@ -1,0 +1,244 @@
+/* ================= ASOSIY SOZLAMALAR ================= */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh; /* min-height o'rniga qat'iy height */
+    background-color: #050505; 
+    color: #e7e7e7;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden; /* Ham x, ham y o'qidagi skrollni yo'qotadi */
+}
+
+/* Fon va effektlar */
+.img-gradient {
+    position: absolute;
+    top: 0;
+    right: 0;
+    opacity: 0.5;
+    z-index: 1; /* Orqa fonga o'tkazildi */
+}
+
+.layer-blur {
+    height: 0;
+    width: 30rem;
+    position: absolute;
+    top: 20%;
+    right: 0;
+    box-shadow: 0 0 700px 15px rgba(255, 255, 255, 0.5);
+    transform: rotate(-30deg); /* CSS qoidasiga to'g'rilandi */
+    z-index: 1;
+}
+
+.container {
+    z-index: 10;
+    width: 100%;
+    max-width: 1400px; /* Barcha sahifalardagi kabi standart kenglik */
+    margin: 0 auto;
+    padding: 0 2rem;
+    position: relative;
+}
+
+/* ================= YUQORI MENYU (HEADER) ================= */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.logo {
+    font-size: 2.5rem;
+    font-weight: 300;
+    letter-spacing: 2px;
+    background: linear-gradient(to right, #fff, #a7a7a7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    gap: 3rem;
+}
+
+nav a {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.95rem;
+    letter-spacing: 0.1em;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+nav a:hover {
+    color: #fff;
+}
+
+/* Aktiv menyu tagidagi binafsha jilo */
+.nav-active {
+    color: #fff !important;
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+}
+
+.nav-active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #7f42a7;
+    box-shadow: 0 0 10px #7f42a7;
+}
+
+.btn-sign {
+    background: linear-gradient(135deg, #e7e7e7, #a7a7a7);
+    color: #000;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-sign:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 20px rgba(231, 231, 231, 0.3);
+    background: #fff;
+}
+
+/* ================= ASOSIY KONTENT (INDEX.HTML) ================= */
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(90vh - 6rem);
+    position: relative;
+    z-index: 10; /* Matnlar 3D robotning ustida va bosishga qulay bo'lishi uchun */
+}
+
+.content {
+    max-width: 42rem;
+    margin-left: 5%; /* 2% o'rniga 5% qildik, matn chapdan biroz uzoqlashadi */
+}
+
+.tag-box {
+    position: relative;
+    width: 18rem;
+    height: 2.5rem;
+    border-radius: 50px;
+    background: linear-gradient(to right, #656565, #7f42a7, #6600c5, #5300a0, #757575, #656565);    
+    background-size: 200%;
+    animation: animationGradient 2.5s linear infinite;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    margin-bottom: 2rem;
+}
+
+@keyframes animationGradient {
+    to { background-position: 200%; }
+}
+
+.tag-box .tag {
+    position: absolute;
+    inset: 3px;
+    background-color: #050505;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    color: #e7e7e7;
+}
+
+.tag-box .tag:hover {
+    color: #a742f5; 
+}
+
+.content h1 {
+    font-size: 3.2rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 1rem 0 2rem;
+    line-height: 1.2;
+    background: linear-gradient(to bottom right, #ffffff, #888888);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.description {
+    font-size: 1.15rem;
+    letter-spacing: 0.05em;
+    max-width: 38rem;
+    color: #999;
+    line-height: 1.7;
+}
+
+/* ================= TUGMALAR ================= */
+.buttons {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.btn-get-started {
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    transition: all 0.3s ease; /* xato to'g'rilandi: backgraund-color */
+}
+
+.btn-get-started:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: #7f42a7;
+    box-shadow: 0 0 20px rgba(127, 66, 167, 0.3);
+}
+
+.btn-sign-main {
+    text-decoration: none;
+    background: linear-gradient(90deg, #5300a0, #7f42a7);
+    color: #fff;
+    padding: 0.8rem 2.5rem;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: all 0.3s ease; 
+    border: none;
+}
+
+.btn-sign-main:hover {
+    box-shadow: 0 10px 25px rgba(127, 66, 167, 0.5);
+    transform: translateY(-2px);
+}
+
+/* ================= 3D MODEL ================= */
+/* ================= 3D MODEL QUTISI ================= */
+.robot-3d {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 80%;
+    /* 100vh o'rniga 100% ishlatamiz, shunda u o'zini o'rab turgan konteynerdan oshib ketmaydi */
+    height: 100%; 
+    z-index: -1;
+    overflow: hidden; 
+}
+
+/* Spline modelini 70 pikselga cho'zib, logoni ekrandan chiqarib yuboramiz */
+.robot-3d spline-viewer {
+    width: 100%;
+    height: calc(100% + 70px);
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-left: 200px;
+}
