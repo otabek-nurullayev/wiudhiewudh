@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Security Scanner - B2B Platforma</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #000000; color: #333; display: flex; flex-direction: column; align-items: center; padding: 30px; }
+        
+        .loader {
+    max-width: 100%;
+    margin-left: 150px;
+    margin-top: -650px;
+    z-index: 999;
+  position: relative;
+  width: 800px;
+  height: 800px;
+  z-index: -1;
+}
+
+.loader span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 600px;
+  height: 600px;
+  border: 2px solid transparent;
+   /* Noaniq aylana shakli */
+  border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+  animation: animate 6s linear infinite;
+}
+
+/* Har bir halqa uchun alohida rang va tezlik */
+.loader span:nth-child(1) {
+  border-color: #e84393;
+  animation-duration: 2s;
+}
+
+.loader span:nth-child(2) {
+  border-color: rgb(59, 211, 249);
+  animation-duration: 4s;
+  /* Teskari aylanish */
+  animation-direction: reverse; 
+}
+
+.loader span:nth-child(3) {
+  border-color: #00b894;
+  animation-duration: 6s;
+}
+.loader span:nth-child(4) {
+  border-color: yellow;
+  animation-duration: 8s;
+}
+.loader span:nth-child(5) {
+  border-color: red;
+  animation-duration: 10s;
+}
+.loader span:nth-child(6) {
+  border-color: rgb(2, 250, 2);
+  animation-duration: 12s;
+}
+
+/* Aylanish animatsiyasi */
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+        /* Auth (Kirish) qismi dizayni */
+        #authContainer { backgrond: rgb(0, 0, 0); padding: 190px 745px; border-radius: 0px; box-shadow: 0 4px 15px rgb(0, 0, 0); width: 100%; max-width: 400px; text-align: center; margin-top: 50px; }
+        #authContainer input { width: 90%; padding: 12px; margin-bottom: 15px; border: 1px solid #000000; border-radius: 50px; font-size: 16px; outline: none; box-shadow: 0 0 30px blueviolet; }
+        .auth-btns { display: flex; gap: 10px; justify-content: center; }
+        .auth-btns button { flex: 1; padding: 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; color: white; transition: 0.3s; }
+        .btn-login { background-color: #4e116f; } .btn-login:hover { background-color: #980cb8; }
+        .btn-register { background-color: #6a6a6a; } .btn-register:hover { background-color: #c2c2c2; }
+        
+        /* Asosiy Dastur dizayni */
+        #appContainer { display: none; background: rgb(145, 145, 145); padding: 30px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 100%; max-width: 1000px; }
+        .header-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 2px solid #ecf0f1; }
+        .logout-btn { background-color: #e74c3c; padding: 8px 15px; font-size: 14px; border: none; border-radius: 5px; color: white; cursor: pointer; }
+        .logout-btn:hover { background-color: #c0392b; }
+        
+        .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+        .input-group input { flex: 1; padding: 12px; border: 1px solid #bdc3c7; border-radius: 5px; font-size: 16px; outline: none; }
+        .input-group button { padding: 12px 25px; background-color: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        .pdf-btn { background-color: #27ae60; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 8px; color: white; border:none; padding: 10px 15px; border-radius: 5px; cursor:pointer;}
+        
+        #loading { display: none; text-align: center; color: #e67e22; font-weight: bold; margin-bottom: 20px; font-size: 18px; }
+        .section-title { color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 5px; margin-top: 30px; margin-bottom: 15px;}
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 14px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ecf0f1; vertical-align: middle;}
+        th { background-color: #34495e; color: white; font-weight: 600; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+        .risk-badge { padding: 5px 10px; border-radius: 20px; font-weight: bold; font-size: 12px; display: inline-block;}
+        .risk-high { background-color: #ff7675; color: #d63031; border: 1px solid #d63031; }
+        .risk-medium { background-color: #ffeaa7; color: #d35400; border: 1px solid #e67e22; }
+        .risk-low { background-color: #55efc4; color: #00b894; border: 1px solid #00b894; }
+        .status-ok { color: #27ae60; font-weight: bold;}
+        
+        #reportContent { padding: 20px; background: white; }
+        .report-header { text-align: center; margin-bottom: 20px; border-bottom: 2px solid #34495e; padding-bottom: 10px; }
+        .history-section { margin-top: 40px; border-top: 2px dashed #bdc3c7; padding-top: 20px; }
+        .history-item { background: #f8f9fa; margin-bottom: 10px; padding: 15px; border-radius: 8px; border-left: 4px solid #3498db; display: flex; justify-content: space-between; align-items: center; }
+        .history-item button { padding: 8px 15px; font-size: 14px; background-color: #95a5a6; color:white; border:none; border-radius:4px; cursor:pointer;}
+    </style>
+</head>
+<body>
+
+    <div id="authContainer">
+        <h2 style="margin-top: 0;font-family: 'Courier New', Courier, monospace; color: #8fc7ff;">Tizimga kirish</h2>
+        <p style="color: #d7d7d7; font-size: 14px; margin-bottom: 25px;">SaaS platformamizga xush kelibsiz</p>
+        <input type="text" id="username" placeholder="Login (Loginingizni kiriting)">
+        <input type="password" id="password" placeholder="Parolingizni kiriting">
+        <div class="auth-btns">
+            <button class="btn-login" onclick="login()">Kirish</button>
+            <button class="btn-register" onclick="register()">Ro'yxatdan o'tish</button>
+        </div>
+        <p id="authMessage" style="color: #e74c3c; margin-top: 15px; font-size: 14px; height: 20px;"></p>
+    </div>
+
+    <div class="loader">
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+  <span></span>
+</div>
+
+    <div id="appContainer">
+        <div class="header-bar">
+            <h2 style="margin: 0; color: #2c3e50;">Kiberxavfsizlik Skaneri</h2>
+            <div>
+                <span style="margin-right: 15px; color: #7f8c8d;">Akkaunt: <strong id="currentUser" style="color: #2c3e50;"></strong></span>
+                <button class="logout-btn" onclick="logout()">Tizimdan chiqish</button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="targetInput" placeholder="IP yoki domenni kiriting (masalan, kun.uz)">
+            <button onclick="startScan()">Tekshirish</button>
+        </div>
+        <div id="loading">Skanerlash jarayoni ketmoqda. Iltimos kuting...</div>
+        
+        <div id="resultContainer" style="display: none;">
+            <div style="text-align: right;">
+                <button class="pdf-btn" onclick="downloadPDF()">📥 Hisobotni yuklab olish</button>
+            </div>
+            
+            <div id="reportContent">
+                <div class="report-header">
+                    <h3 style="color: #2c3e50; margin: 0;">Sayt/Tizim Xavfsizlik Auditi</h3>
+                    <p style="color: #7f8c8d; margin-top: 5px;">Tekshirildi: <strong id="scannedTarget"></strong></p>
+                    <p style="color: #7f8c8d; font-size: 12px;">Sana: <span id="scanDate"></span></p>
+                </div>
+                <div id="resultData"></div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <h3 style="color: #2c3e50;">⏳ Sizning tekshiruvlar tarixingiz</h3>
+            <ul style="list-style: none; padding: 0;" id="historyList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const riskDatabase = {
+            "21": { level: "Yuqori", class: "risk-high", fix: "SFTP (22-port) ga o'ting yoki VPN orqali yoping." },
+            "22": { level: "O'rta", class: "risk-medium", fix: "Faqat ishonchli IP manzillardan kirishga ruxsat bering." },
+            "80": { level: "O'rta", class: "risk-medium", fix: "Saytga SSL sertifikat o'rnating va HTTPS'ga yo'naltiring." },
+            "443": { level: "Xavfsiz", class: "risk-low", fix: "HTTPS ishlayapti, hozircha xavfsiz." },
+            "631": { level: "Past", class: "risk-low", fix: "Printer xizmati. Lokal kompyuter bilan cheklang." },
+            "3306": { level: "Juda Yuqori", class: "risk-high", fix: "Baza ochiq! Tashqi tarmoqdan kirishni zudlik bilan yoping." },
+            "5432": { level: "Juda Yuqori", class: "risk-high", fix: "Baza ochiq! Firewall orqali portni himoyalang." },
+            "8000": { level: "Past", class: "risk-low", fix: "Lokal/Test server. Internetga ochiq qoldirmang." },
+            "8080": { level: "O'rta", class: "risk-medium", fix: "Alternativ server. Keraksiz bo'lsa yopib qo'ying." },
+            "8443": { level: "O'rta", class: "risk-medium", fix: "Alternativ HTTPS. Keraksiz bo'lsa Firewall orqali yoping." }
+        };
+
+        // Sahifa yonganda logindan o'tganligini tekshirish
+        window.onload = function() {
+            const user = localStorage.getItem("scannerUser");
+            if (user) {
+                showApp(user);
+            }
+        };
+
+        // Xatolik xabarlarini ko'rsatish
+        function showAuthMsg(msg, isSuccess = false) {
+            const msgEl = document.getElementById('authMessage');
+            msgEl.style.color = isSuccess ? '#27ae60' : '#e74c3c';
+            msgEl.innerText = msg;
+        }
+
+        // --- AUTH API LARIGA SO'ROV YUBORISH ---
+        async function register() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if (!u || !p) return showAuthMsg("Login va parolni kiriting!");
+
+            try {
+                const res = await fetch('http://127.0.0.1:8000/register/', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username: u, password: p})
+                });
+                const data = await res.json();
+                if (res.ok) showAuthMsg(data.message, true);
+                else showAuthMsg(data.detail);
+            } catch (e) { showAuthMsg("Server ulanishida xatolik!"); }
+        }
+
+        async function login() {
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            if (!u || !p) return showAuthMsg("Login va parolni kiriting!");
+
+            try {
+                const res = await fetch('http://127.0.0.1:8000/login/', {
+                    method: 'POST', headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username: u, password: p})
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    localStorage.setItem("scannerUser", data.username);
+                    showApp(data.username);
+                } else {
+                    showAuthMsg(data.detail);
+                }
+            } catch (e) { showAuthMsg("Server ulanishida xatolik!"); }
+        }
+
+        function logout() {
+            localStorage.removeItem("scannerUser");
+            document.getElementById('appContainer').style.display = 'none';
+            document.getElementById('authContainer').style.display = 'block';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            showAuthMsg("");
+        }
+
+        function showApp(username) {
+            document.getElementById('authContainer').style.display = 'none';
+            document.getElementById('appContainer').style.display = 'block';
+            document.getElementById('currentUser').innerText = username;
+            loadHistory(username);
+        }
+
+        // --- ASOSIY DASTUR MANTIQI ---
+        async function loadHistory(username) {
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/history/?username=${username}`);
+                const data = await response.json();
+                const list = document.getElementById('historyList');
+                list.innerHTML = '';
+                
+                if (data.history.length === 0) {
+                    list.innerHTML = '<li style="color: #7f8c8d;">Hali tarix yo\'q. Skanerlashni boshlang!</li>';
+                    return;
+                }
+
+                data.history.forEach(item => {
+                    list.innerHTML += `
+                        <li class="history-item">
+                            <div><strong>${item.target}</strong> <span style="font-size: 13px; color: #7f8c8d; margin-left: 15px;">🕒 ${item.date}</span></div>
+                            <button onclick="document.getElementById('targetInput').value='${item.target}'; startScan();">Qayta tekshirish</button>
+                        </li>`;
+                });
+            } catch(e) {}
+        }
+
+        async function startScan() {
+            const target = document.getElementById('targetInput').value;
+            const user = localStorage.getItem("scannerUser");
+            if (!target) return alert("Iltimos, manzilni kiriting!");
+
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+
+            try {
+                const response = await fetch(`http://127.0.0.1:8000/scan/?target=${target}&username=${user}`);
+                const data = await response.json();
+                
+                document.getElementById('scannedTarget').innerText = target;
+                document.getElementById('scanDate').innerText = new Date().toLocaleString('uz-UZ');
+                
+                let resultData = document.getElementById('resultData');
+                let htmlContent = "";
+
+                htmlContent += `<h4 class="section-title">🔌 1-qadam: Tarmoq Portlari (Server xavfsizligi)</h4>`;
+                if (data.result.ports && data.result.ports.length > 0) {
+                    htmlContent += `<table><tr><th>Port</th><th>Xavf</th><th>Xizmat turi</th><th>Tavsiya</th></tr>`;
+                    data.result.ports.forEach(item => {
+                        let risk = riskDatabase[item.port] || { level: "Noma'lum", class: "risk-medium", fix: "Keraksiz bo'lsa Firewall orqali yoping." };
+                        htmlContent += `<tr>
+                            <td><b>${item.port}</b></td>
+                            <td><span class="risk-badge ${risk.class}">${risk.level}</span></td>
+                            <td>${item.service}</td>
+                            <td style="color: #27ae60; font-style: italic;">💡 ${risk.fix}</td></tr>`;
+                    });
+                    htmlContent += `</table>`;
+                } else {
+                    htmlContent += `<p style="color: #7f8c8d;">Ushbu manzilda ochiq portlar topilmadi.</p>`;
+                }
+
+                htmlContent += `<h4 class="section-title">🛡️ 2-qadam: Veb-sayt Dasturiy Xavfsizligi (Headers)</h4>`;
+                if (data.result.headers && data.result.headers.length > 0) {
+                    htmlContent += `<table><tr><th>Himoya qatlami</th><th>Holati</th><th>Izoh</th></tr>`;
+                    data.result.headers.forEach(item => {
+                        let statusColor = item.status === "Yaxshi" ? "status-ok" : (item.status === "Xato" ? "color: #7f8c8d" : "color: #e74c3c; font-weight: bold;");
+                        htmlContent += `<tr>
+                            <td><b>${item.name}</b></td>
+                            <td style="${statusColor}">${item.status}</td>
+                            <td>${item.desc}</td></tr>`;
+                    });
+                    htmlContent += `</table>`;
+                }
+
+                resultData.innerHTML = htmlContent;
+                document.getElementById('resultContainer').style.display = 'block';
+                loadHistory(user);
+
+            } catch (error) {
+                alert("Server xatosi! Terminalda FastAPI ishlayotganini tekshiring.");
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function downloadPDF() {
+            const element = document.getElementById('reportContent');
+            const targetName = document.getElementById('scannedTarget').innerText;
+            html2pdf().set({
+                margin: 10, filename: `Xavfsizlik_Auditi_${targetName}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' }
+            }).from(element).save();
+        }
+    </script>
+</body>
+</html>
